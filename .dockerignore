@@ -1,0 +1,14 @@
+.git
+.gitignore
+.dockerignore
+target/
+*.log
+.idea/
+*.iml
+.vscode/
+.DS_Store
+README.md
+git-push.bat
+git-push.sh
+run-tests.bat
+run-tests.sh

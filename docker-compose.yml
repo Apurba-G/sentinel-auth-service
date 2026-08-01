@@ -1,0 +1,67 @@
+services:
+  # PostgreSQL Database Container
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: auth-postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d auth_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ecommerce-network
+
+  # MinIO Object Storage Container (Self-hosted S3 alternative for photos & videos)
+  minio-storage:
+    image: minio/minio:latest
+    container_name: auth-minio-storage
+    restart: always
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminpassword
+    ports:
+      - "9000:9000" # MinIO API Port
+      - "9001:9001" # MinIO Web Console UI
+    volumes:
+      - minio_auth_data:/data
+    networks:
+      - ecommerce-network
+
+  # Auth & Identity Microservice Container
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce-auth-service
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_URL=jdbc:postgresql://postgres-db:5432/auth_db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgrespassword
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
+
+volumes:
+  postgres_auth_data:
+    driver: local
+  minio_auth_data:
+    driver: local
