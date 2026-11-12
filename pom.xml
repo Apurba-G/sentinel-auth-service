@@ -11,11 +11,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.ecommerce</groupId>
-    <artifactId>ecommerce-auth-service</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>ecommerce-auth-service</name>
-    <description>Enterprise E-Commerce Authentication and Identity Microservice</description>
+    <groupId>com.sentinel.auth</groupId>
+    <artifactId>sentinel-auth-core</artifactId>
+    <version>1.0.0-RELEASE</version>
+    <name>sentinel-auth-core</name>
+    <description>SentinelAuth: Universal Zero-Trust Authentication, Dynamic Recovery, RedisBloom &amp; Anti-Tamper Security Engine</description>
 
     <properties>
         <java.version>17</java.version>
@@ -40,6 +40,24 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Redis & RedisBloom Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.27.2</version>
+        </dependency>
+
+        <!-- Hibernate JSONB Dynamic Attributes Support -->
+        <dependency>
+            <groupId>io.hypersistence</groupId>
+            <artifactId>hypersistence-utils-hibernate-63</artifactId>
+            <version>3.7.3</version>
         </dependency>
 
         <!-- Swagger / OpenAPI 3 UI -->
