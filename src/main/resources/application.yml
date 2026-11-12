@@ -6,13 +6,19 @@ spring:
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgrespassword}
     driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 3000ms
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
@@ -20,7 +26,7 @@ spring:
     locations: classpath:db/migration
 
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 springdoc:
   api-docs:
@@ -33,7 +39,21 @@ springdoc:
 application:
   security:
     jwt:
-      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-      expiration: 86400000
+      # Secret key (256-bit hex)
+      secret-key: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      # Tight security: 15 minutes access token = 900,000 ms
+      expiration: 900000
       refresh-token:
+        # Rotating refresh token: 7 days = 604,800,000 ms
         expiration: 604800000
+    lockout:
+      # Maximum allowed failed attempts before 72H block
+      max-failed-attempts: 4
+      # 72 hours in minutes = 4320 mins (259200 seconds)
+      lockout-duration-hours: 72
+    captcha:
+      expiration-seconds: 180
+    temporary-password:
+      expiration-hours: 24
+    cors:
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:3000,https://*.vercel.app,https://*.railway.app}
