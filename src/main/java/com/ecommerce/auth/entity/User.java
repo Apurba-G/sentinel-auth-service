@@ -1,7 +1,9 @@
 package com.ecommerce.auth.entity;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -78,6 +80,34 @@ public class User implements UserDetails {
 
     @Column(name = "locked_until")
     private OffsetDateTime lockedUntil;
+
+    @Column(name = "must_change_password", nullable = false)
+    @Builder.Default
+    private Boolean mustChangePassword = false;
+
+    @Column(name = "temp_password_issued_at")
+    private OffsetDateTime tempPasswordIssuedAt;
+
+    @Column(name = "temp_password_expiry")
+    private OffsetDateTime tempPasswordExpiry;
+
+    @Column(name = "recovery_phrase_hash")
+    private String recoveryPhraseHash;
+
+    @Type(JsonType.class)
+    @Column(name = "dynamic_attributes", columnDefinition = "jsonb")
+    @Builder.Default
+    private Map<String, Object> dynamicAttributes = new HashMap<>();
+
+    @Column(name = "lockout_count", nullable = false)
+    @Builder.Default
+    private Integer lockoutCount = 0;
+
+    @Column(name = "last_known_ip", length = 50)
+    private String lastKnownIp;
+
+    @Column(name = "last_known_device")
+    private String lastKnownDevice;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
