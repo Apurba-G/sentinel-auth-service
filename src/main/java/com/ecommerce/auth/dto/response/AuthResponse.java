@@ -2,6 +2,9 @@ package com.ecommerce.auth.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -9,8 +12,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Schema(description = "Authentication Success Response with JWT Token")
+@Schema(description = "Authentication Success Response with JWT Token, Lockout & Recovery Keys")
 public class AuthResponse {
+
     @Schema(description = "JWT Bearer Token")
     private String token;
 
@@ -32,4 +36,17 @@ public class AuthResponse {
 
     @Schema(description = "Assigned Roles")
     private Set<String> roles;
+
+    @Schema(description = "Flag requiring client to update temporary password immediately")
+    @Builder.Default
+    private Boolean mustChangePassword = false;
+
+    @Schema(description = "12-word BIP-39 Master Recovery Phrase (Shown only once upon registration)")
+    private String mnemonicRecoveryPhrase;
+
+    @Schema(description = "Single-use Alphanumeric Backup Recovery Codes (Shown only once upon registration)")
+    private List<String> backupRecoveryCodes;
+
+    @Schema(description = "Dynamic Project-Specific Attributes")
+    private Map<String, Object> dynamicAttributes;
 }
