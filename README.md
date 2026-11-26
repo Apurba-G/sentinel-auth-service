@@ -201,8 +201,3 @@ docker-compose up --build -d
 | **Blockchain Anchoring** | Merkle Tree Binary Root on Polygon PoS |
 | **Frontend Framework** | Angular 18+ (Standalone & NgModule compatible) |
 
----
-
-## 6. Academic Viva & Interview Guide
-
-For the complete 150-question viva preparation guide, line-by-line architectural code analyses, and 40-step commit roadmap, refer to [SENTINEL_AUTH_PROFESSOR_VIVA_AND_INTEGRATION_GUIDE.md](SENTINEL_AUTH_PROFESSOR_VIVA_AND_INTEGRATION_GUIDE.md).
